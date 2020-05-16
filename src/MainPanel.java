@@ -14,6 +14,7 @@ public class MainPanel extends JPanel {
     JLabel time;
     int t;
     Timer timer = new Timer(true);
+    boolean started = false;
 
     MainPanel(Main frame, int reit, int[] fine) {
         this.frame = frame;
@@ -22,10 +23,11 @@ public class MainPanel extends JPanel {
 
         int stopper = (reit < 1000? 2: (reit > 1700? 0: 1));
         Random random = new Random();
-        Set<Color> setColors = new LinkedHashSet<>(6 - stopper * 2);
+        Set<Color> setColors = new HashSet<>(6 - stopper * 2);
         while (setColors.size() < 6 - stopper * 2){
             setColors.add(colorStorage[random.nextInt(6)]);
         }
+        colorStorage = new Color[setColors.size()];
         setColors.toArray(colorStorage);
         t = stopper;
         for(Color color: setColors){
@@ -46,90 +48,86 @@ public class MainPanel extends JPanel {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()){
-                    case KeyEvent.VK_1:
-                        if(colors[0] != null){
-                            if(!colors[0].equals(workingColors.getFirst())){
-                                fine[1] = (fine[1] == 0? 1: fine[1] * 2);
-                                strColor = Color.red;
-                            }
-                            else{
-                                strColor = Color.green;
-                            }
-                            workingColors.removeFirst();
-                            repaint();
-                        }
-                        break;
-                    case KeyEvent.VK_2:
-                            if(colors[1] != null){
-                                if(!colors[1].equals(workingColors.getFirst())){
-                                    fine[1] = (fine[1] == 0? 1: fine[1] * 2);
+                if(started) {
+                    switch (e.getKeyCode()) {
+                        case KeyEvent.VK_1:
+                            if (colors[0] != null) {
+                                if (!colors[0].equals(workingColors.getFirst())) {
+                                    fine[1] = (fine[1] == 0 ? 1 : fine[1] * 2);
                                     strColor = Color.red;
-                                }
-                                else{
+                                } else {
                                     strColor = Color.green;
                                 }
                                 workingColors.removeFirst();
                                 repaint();
                             }
                             break;
-                    case KeyEvent.VK_3:
-                        if(colors[2] != null){
-                            if(!colors[2].equals(workingColors.getFirst())){
-                                fine[1] = (fine[1] == 0? 1: fine[1] * 2);
-                                strColor = Color.red;
-                            }
-                            else{
-                                strColor = Color.green;
-                            }
-                            workingColors.removeFirst();
-                            repaint();
-                        }
-                        break;
-                    case KeyEvent.VK_8:
-                            if(colors[3] != null){
-                                if(!colors[3].equals(workingColors.getFirst())){
-                                    fine[1] = (fine[1] == 0? 1: fine[1] * 2);
+                        case KeyEvent.VK_2:
+                            if (colors[1] != null) {
+                                if (!colors[1].equals(workingColors.getFirst())) {
+                                    fine[1] = (fine[1] == 0 ? 1 : fine[1] * 2);
                                     strColor = Color.red;
-                                }
-                                else{
+                                } else {
                                     strColor = Color.green;
                                 }
                                 workingColors.removeFirst();
                                 repaint();
                             }
                             break;
-                    case KeyEvent.VK_9:
-                         if(colors[4] != null){
-                             if(!colors[4].equals(workingColors.getFirst())){
-                                 fine[1] = (fine[1] == 0? 1: fine[1] * 2);
-                                 strColor = Color.red;
-                             }
-                             else{
-                                 strColor = Color.green;
-                             }
-                             workingColors.removeFirst();
-                             repaint();
-                         }
-                         break;
-                    case KeyEvent.VK_0:
-                             if(colors[5] != null){
-                                 if(!colors[5].equals(workingColors.getFirst())){
-                                     fine[1] = (fine[1] == 0? 1: fine[1] * 2);
-                                     strColor = Color.red;
-                                 }
-                                 else{
-                                     strColor = Color.green;
-                                 }
-                                 workingColors.removeFirst();
-                                 repaint();
-                             }
-                             break;
-                }
-                if(workingColors.isEmpty()){
-                    String[] s = time.getText().split(":");
-                    fine[0] = Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]) * (s[0].charAt(0) == '-'? -1: 1);
-                    frame.contin();
+                        case KeyEvent.VK_3:
+                            if (colors[2] != null) {
+                                if (!colors[2].equals(workingColors.getFirst())) {
+                                    fine[1] = (fine[1] == 0 ? 1 : fine[1] * 2);
+                                    strColor = Color.red;
+                                } else {
+                                    strColor = Color.green;
+                                }
+                                workingColors.removeFirst();
+                                repaint();
+                            }
+                            break;
+                        case KeyEvent.VK_8:
+                            if (colors[3] != null) {
+                                if (!colors[3].equals(workingColors.getFirst())) {
+                                    fine[1] = (fine[1] == 0 ? 1 : fine[1] * 2);
+                                    strColor = Color.red;
+                                } else {
+                                    strColor = Color.green;
+                                }
+                                workingColors.removeFirst();
+                                repaint();
+                            }
+                            break;
+                        case KeyEvent.VK_9:
+                            if (colors[4] != null) {
+                                if (!colors[4].equals(workingColors.getFirst())) {
+                                    fine[1] = (fine[1] == 0 ? 1 : fine[1] * 2);
+                                    strColor = Color.red;
+                                } else {
+                                    strColor = Color.green;
+                                }
+                                workingColors.removeFirst();
+                                repaint();
+                            }
+                            break;
+                        case KeyEvent.VK_0:
+                            if (colors[5] != null) {
+                                if (!colors[5].equals(workingColors.getFirst())) {
+                                    fine[1] = (fine[1] == 0 ? 1 : fine[1] * 2);
+                                    strColor = Color.red;
+                                } else {
+                                    strColor = Color.green;
+                                }
+                                workingColors.removeFirst();
+                                repaint();
+                            }
+                            break;
+                    }
+                    if (workingColors.isEmpty()) {
+                        String[] s = time.getText().split(":");
+                        fine[0] = Integer.parseInt(s[0]) * -60 + Integer.parseInt(s[1]) * (s[0].charAt(0) == '-' ? 1 : -1);
+                        frame.contin();
+                    }
                 }
             }
 
