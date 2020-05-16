@@ -33,7 +33,7 @@ public class MainPanel extends JPanel {
         for(Color color: setColors){
             colors[t++] = color;
         }
-        for(int i = 0; i < reit / 50; i++){
+        for(int i = 0; i < reit / 25; i++){
             workingColors.add(colorStorage[random.nextInt(colorStorage.length)]);
         }
 
