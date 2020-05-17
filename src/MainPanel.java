@@ -25,9 +25,9 @@ public class MainPanel extends JPanel {
         w = frame.getWidth();
         h = frame.getWidth();
         w1 = w / 2;
-        StrY = new int[]{h - 280, h - 260, h - 270, h - 270, h - 290, h - 290, h - 300};
+        StrY = new int[]{h - 300, h - 280, h - 290, h - 290, h - 310, h - 310, h - 320};
         rightStrX = new int[]{w1 + 50, w1 + 80, w1 + 80, w1 + 140, w1 + 140, w1 + 80, w1 + 80};
-        leftStrX = new int[]{};
+        leftStrX = new int[]{w1 - 50, w1 - 80, w1 - 80, w1 - 140, w1 - 140, w1 - 80, w1 - 80};
         setBounds(0, 0, frame.getWidth(), frame.getHeight());
         setLayout(null);
 
@@ -183,5 +183,6 @@ public class MainPanel extends JPanel {
         }
         g.setColor(strColor);
         g.fillPolygon(rightStrX, StrY, rightStrX.length);
+        g.fillPolygon(leftStrX, StrY, leftStrX.length);
     }
 }
