@@ -118,6 +118,9 @@ public class MainPanel extends JPanel {
                     if (workingColors.isEmpty()) {
                         String[] s = time.getText().split(":");
                         fine[0] = Integer.parseInt(s[0]) * -60 + Integer.parseInt(s[1]) * (s[0].charAt(0) == '-' ? 1 : -1);
+                        fine[0] = (int)(Math.signum(fine[0]) * Math.pow(Math.abs(fine[0]), 1.5));
+                        timer.cancel();
+                        remove(time);
                         frame.contin();
                     }
                 }
@@ -141,9 +144,9 @@ public class MainPanel extends JPanel {
     }
 
     void updateWorkingList(int reit) {
-        timer = new Timer(true);
+        timer = new Timer();
         colorStorage = new Color[]{Color.BLACK, Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW, Color.MAGENTA};
-        int stopper = (reit < 1000? 2: (reit > 1200? 0: 1));
+        int stopper = (reit < 1000? 2: (reit > 1600? 0: 1));
         Random random = new Random();
         Set<Color> setColors = new HashSet<>(6 - stopper * 2);
         while (setColors.size() < 6 - stopper * 2){

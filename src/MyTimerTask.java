@@ -3,10 +3,10 @@ import java.awt.*;
 import java.util.TimerTask;
 
 public class MyTimerTask extends TimerTask {
-    private JLabel label;
+    private final JLabel label;
     private int s, m;
     private boolean minus = false;
-    private MainPanel panel;
+    private final MainPanel panel;
 
     MyTimerTask(JLabel importLabel, int t, MainPanel p){
         label = importLabel;
