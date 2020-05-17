@@ -70,9 +70,10 @@ public class Main extends JFrame {
         shtraf.setBounds(100, 200, 7000, 300);
         shtraf.setFont(font);
         add(shtraf);
+        reit += delta;
         try {
             PrintWriter writer = new PrintWriter(file);
-            writer.println(reit + delta);
+            writer.println(reit);
             writer.close();
         }
         catch (FileNotFoundException e){}
@@ -85,7 +86,7 @@ public class Main extends JFrame {
         start.addActionListener(l -> {
             getContentPane().removeAll();
             repaint();
-            panel.updateWorkingList(reit + delta);
+            panel.updateWorkingList(reit);
             add(panel);
             panel.start();
         });

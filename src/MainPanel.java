@@ -116,6 +116,7 @@ public class MainPanel extends JPanel {
                             break;
                     }
                     if (workingColors.isEmpty()) {
+                        started = false;
                         String[] s = time.getText().split(":");
                         fine[0] = Integer.parseInt(s[0]) * -60 + Integer.parseInt(s[1]) * (s[0].charAt(0) == '-' ? 1 : -1);
                         fine[0] = (int)(Math.signum(fine[0]) * Math.pow(Math.abs(fine[0]), 1.5));
