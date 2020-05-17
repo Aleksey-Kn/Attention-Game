@@ -85,7 +85,7 @@ public class Main extends JFrame {
         start.addActionListener(l -> {
             getContentPane().removeAll();
             repaint();
-            panel = new MainPanel(this, reit + delta, fine);
+            panel.updateWorkingList(reit + delta);
             add(panel);
             panel.start();
         });

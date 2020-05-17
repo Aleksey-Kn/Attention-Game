@@ -7,22 +7,23 @@ import java.util.Timer;
 
 public class MainPanel extends JPanel {
     Color strColor = Color.BLUE;
-    Color[] colorStorage = new Color[]{Color.BLACK, Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW, Color.MAGENTA};
+    Color[] colorStorage;
     Color[] colors = new Color[6];
     LinkedList<Color> workingColors = new LinkedList<>();
     Main frame;
     JLabel time;
     int t;
-    final private int w, h, w1;
+    final private int h;
+    final private int w1;
     private final int[] leftStrX;
     private final int[] StrY;
     private final int[] rightStrX;
-    Timer timer = new Timer(true);
+    Timer timer;
     boolean started = false;
 
     MainPanel(Main frame, int reit, int[] fine) {
         this.frame = frame;
-        w = frame.getWidth();
+        int w = frame.getWidth();
         h = frame.getWidth();
         w1 = w / 2;
         StrY = new int[]{h - 300, h - 280, h - 290, h - 290, h - 310, h - 310, h - 320};
@@ -31,26 +32,7 @@ public class MainPanel extends JPanel {
         setBounds(0, 0, frame.getWidth(), frame.getHeight());
         setLayout(null);
 
-        int stopper = (reit < 1000? 2: (reit > 1700? 0: 1));
-        Random random = new Random();
-        Set<Color> setColors = new HashSet<>(6 - stopper * 2);
-        while (setColors.size() < 6 - stopper * 2){
-            setColors.add(colorStorage[random.nextInt(6)]);
-        }
-        colorStorage = new Color[setColors.size()];
-        setColors.toArray(colorStorage);
-        t = stopper;
-        for(Color color: setColors){
-            colors[t++] = color;
-        }
-        for(int i = 0; i < reit / 25; i++){
-            workingColors.add(colorStorage[random.nextInt(colorStorage.length)]);
-        }
-
-        t = (int)Math.ceil(workingColors.size() * (1000f / reit));
-        time = new JLabel((t / 60) + ":" + (t % 60));
-        time.setBounds(5, 5, 100, 20);
-        add(time);
+        updateWorkingList(reit);
 
         frame.addKeyListener(new KeyListener() {
             @Override
@@ -156,6 +138,31 @@ public class MainPanel extends JPanel {
         add(previousTimer);
         MyTimerTask mtt = new MyTimerTask(time, t, this);
         timer.schedule(new PreviousTimerTask(timer, previousTimer, mtt, this), 1000, 1000);
+    }
+
+    void updateWorkingList(int reit) {
+        timer = new Timer(true);
+        colorStorage = new Color[]{Color.BLACK, Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW, Color.MAGENTA};
+        int stopper = (reit < 1000? 2: (reit > 1200? 0: 1));
+        Random random = new Random();
+        Set<Color> setColors = new HashSet<>(6 - stopper * 2);
+        while (setColors.size() < 6 - stopper * 2){
+            setColors.add(colorStorage[random.nextInt(6)]);
+        }
+        colorStorage = new Color[setColors.size()];
+        setColors.toArray(colorStorage);
+        t = stopper;
+        for(Color color: setColors){
+            colors[t++] = color;
+        }
+        for(int i = 0; i < reit / 25; i++){
+            workingColors.add(colorStorage[random.nextInt(colorStorage.length)]);
+        }
+
+        t = (int)Math.ceil(workingColors.size() * (1000f / reit));
+        time = new JLabel((t / 60) + ":" + (t % 60));
+        time.setBounds(5, 5, 100, 20);
+        add(time);
     }
 
     @Override
