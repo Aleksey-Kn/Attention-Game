@@ -13,11 +13,21 @@ public class MainPanel extends JPanel {
     Main frame;
     JLabel time;
     int t;
+    final private int w, h, w1;
+    private final int[] leftStrX;
+    private final int[] StrY;
+    private final int[] rightStrX;
     Timer timer = new Timer(true);
     boolean started = false;
 
     MainPanel(Main frame, int reit, int[] fine) {
         this.frame = frame;
+        w = frame.getWidth();
+        h = frame.getWidth();
+        w1 = w / 2;
+        StrY = new int[]{h - 280, h - 260, h - 270, h - 270, h - 290, h - 290, h - 300};
+        rightStrX = new int[]{w1 + 50, w1 + 80, w1 + 80, w1 + 140, w1 + 140, w1 + 80, w1 + 80};
+        leftStrX = new int[]{};
         setBounds(0, 0, frame.getWidth(), frame.getHeight());
         setLayout(null);
 
@@ -132,9 +142,7 @@ public class MainPanel extends JPanel {
             }
 
             @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
+            public void keyReleased(KeyEvent e) {}
         });
 
         setVisible(true);
@@ -146,14 +154,14 @@ public class MainPanel extends JPanel {
         previousTimer.setBounds(300, 0, 200, 400);
         previousTimer.setFont(new Font("Arial", Font.BOLD, 300));
         add(previousTimer);
-        MyTimerTask mtt = new MyTimerTask(time, t, strColor);
+        MyTimerTask mtt = new MyTimerTask(time, t, this);
         timer.schedule(new PreviousTimerTask(timer, previousTimer, mtt, this), 1000, 1000);
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        int it = 0, w = frame.getWidth(), h = frame.getWidth();
+        int it = 0;
         for(int i = 1; i <= 3; i++){
             g.drawString(Integer.toString(i), 100 + 80 * i, 600);
         }
@@ -171,7 +179,9 @@ public class MainPanel extends JPanel {
                 break;
             }
             g.setColor(color);
-            g.fillRect(w / 2 - 25, h - 250 - it * 75, 50, 50);
+            g.fillRect(w1 - 25, h - 250 - it * 75, 50, 50);
         }
+        g.setColor(strColor);
+        g.fillPolygon(rightStrX, StrY, rightStrX.length);
     }
 }

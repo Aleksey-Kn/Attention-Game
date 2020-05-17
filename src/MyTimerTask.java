@@ -3,21 +3,24 @@ import java.awt.*;
 import java.util.TimerTask;
 
 public class MyTimerTask extends TimerTask {
-    JLabel label;
-    int s, m;
-    boolean minus = false;
-    Color strColor;
+    private JLabel label;
+    private int s, m;
+    private boolean minus = false;
+    private MainPanel panel;
 
-    MyTimerTask(JLabel importLabel, int t, Color color){
+    MyTimerTask(JLabel importLabel, int t, MainPanel p){
         label = importLabel;
         m = t / 60;
         s = t % 60;
-        strColor = color;
+        panel = p;
     }
 
     @Override
     public void run() {
-        strColor = Color.BLUE;
+        if(panel.strColor != Color.BLUE) {
+            panel.strColor = Color.BLUE;
+            panel.repaint();
+        }
         if(!minus) {
             if (s > 0) {
                 s--;
