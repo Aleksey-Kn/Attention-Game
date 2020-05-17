@@ -2,12 +2,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Main extends JFrame {
     int reit;
     int[] fine = new int[2];
     MainPanel panel;
+    private final File file = new File("reit.txt");
+    private final Font font = new Font("Calibri", Font.PLAIN, 36);
 
     Main(){
         super("Attention game");
@@ -17,13 +21,13 @@ public class Main extends JFrame {
         setFocusable(true);
 
         try {
-            reit = new Scanner(new File("reit.txt")).nextInt();
-        }catch (FileNotFoundException e){
+            reit = new Scanner(file).nextInt();
+        }catch (FileNotFoundException | NoSuchElementException e){
             reit = 1000;
         }
 
         JLabel label = new JLabel("Ваш рейтинг: " + reit);
-        label.setFont(new Font("Calibri", Font.PLAIN, 36));
+        label.setFont(font);
         label.setBounds(250, 150, 400, 300);
         add(label);
         JButton start = new JButton("Начать");
@@ -40,11 +44,52 @@ public class Main extends JFrame {
         setVisible(true);
     }
 
-    void contin(){
-        dispose();
-        System.out.println("Штраф за время:" + fine[0]);
-        System.out.println("Штраф за неправильные ответы: " + fine[1]);
-        System.exit(0);
+    void contin (){
+        getContentPane().removeAll();
+        repaint();
+        int delta = -(fine[0] + fine[1]) / 2;
+        JLabel label = new JLabel("Ваш рейтинг: ");
+        label.setFont(font);
+        label.setBounds(250, 0, 250, 300);
+        add(label);
+        JLabel reiting = new JLabel((reit + delta) + "(" + delta + ")");
+        reiting.setFont(font);
+        reiting.setBounds(500, 0, 250, 300);
+        if(delta >= 0){
+            reiting.setForeground(Color.green);
+        }
+        else{
+            reiting.setForeground(Color.red);
+        }
+        add(reiting);
+        JLabel time = new JLabel((fine[0] < 0? "Бонус за время: ": "Штраф за время: ") + Math.abs(fine[0]));
+        time.setBounds(100, 100, 700, 300);
+        time.setFont(font);
+        add(time);
+        JLabel shtraf = new JLabel("Штраф за неправильные ответы: " + fine[1]);
+        shtraf.setBounds(100, 200, 7000, 300);
+        shtraf.setFont(font);
+        add(shtraf);
+        try {
+            PrintWriter writer = new PrintWriter(file);
+            writer.println(reit + delta);
+            writer.close();
+        }
+        catch (FileNotFoundException e){}
+        JButton exit = new JButton("Выход");
+        exit.addActionListener(l -> System.exit(0));
+        exit.setBounds(500, 550, 200, 100);
+        add(exit);
+        JButton start = new JButton("Заново");
+        start.setBounds(100, 550, 200, 100);
+        start.addActionListener(l -> {
+            getContentPane().removeAll();
+            repaint();
+            panel = new MainPanel(this, reit + delta, fine);
+            add(panel);
+            panel.start();
+        });
+        add(start);
     }
 
     public static void main(String[] args) {

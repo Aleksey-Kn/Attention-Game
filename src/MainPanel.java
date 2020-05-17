@@ -26,8 +26,8 @@ public class MainPanel extends JPanel {
         h = frame.getWidth();
         w1 = w / 2;
         StrY = new int[]{h - 300, h - 280, h - 290, h - 290, h - 310, h - 310, h - 320};
-        rightStrX = new int[]{w1 + 50, w1 + 80, w1 + 80, w1 + 140, w1 + 140, w1 + 80, w1 + 80};
-        leftStrX = new int[]{w1 - 50, w1 - 80, w1 - 80, w1 - 140, w1 - 140, w1 - 80, w1 - 80};
+        rightStrX = new int[]{w1 + 80, w1 + 110, w1 + 110, w1 + 170, w1 + 170, w1 + 110, w1 + 110};
+        leftStrX = new int[]{w1 - 80, w1 - 110, w1 - 110, w1 - 170, w1 - 170, w1 - 110, w1 - 110};
         setBounds(0, 0, frame.getWidth(), frame.getHeight());
         setLayout(null);
 
