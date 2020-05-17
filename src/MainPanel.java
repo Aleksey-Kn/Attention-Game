@@ -32,7 +32,7 @@ public class MainPanel extends JPanel {
         setBounds(0, 0, frame.getWidth(), frame.getHeight());
         setLayout(null);
 
-        updateWorkingList(reit);
+        updateWorkingList(reit, fine);
 
         frame.addKeyListener(new KeyListener() {
             @Override
@@ -144,8 +144,9 @@ public class MainPanel extends JPanel {
         timer.schedule(new PreviousTimerTask(timer, previousTimer, mtt, this), 1000, 1000);
     }
 
-    void updateWorkingList(int reit) {
+    void updateWorkingList(int reit, int[] fine) {
         timer = new Timer();
+        Arrays.fill(fine, 0);
         colorStorage = new Color[]{Color.BLACK, Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW, Color.MAGENTA};
         int stopper = (reit < 1000? 2: (reit > 1600? 0: 1));
         Random random = new Random();
