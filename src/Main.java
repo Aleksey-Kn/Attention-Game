@@ -76,7 +76,7 @@ public class Main extends JFrame {
             writer.println(reit);
             writer.close();
         }
-        catch (FileNotFoundException e){}
+        catch (FileNotFoundException ignored){}
         JButton exit = new JButton("Выход");
         exit.addActionListener(l -> System.exit(0));
         exit.setBounds(500, 550, 200, 100);
