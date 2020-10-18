@@ -6,13 +6,11 @@ public class PreviousTimerTask extends TimerTask {
     int now = 2;
     Timer timer;
     JLabel label;
-    TimerTask timerTask;
     MainPanel panel;
 
-    PreviousTimerTask(Timer t, JLabel l, TimerTask mtt, MainPanel panel){
+    PreviousTimerTask(Timer t, JLabel l, MainPanel panel){
         timer = t;
         label = l;
-        timerTask = mtt;
         this.panel = panel;
     }
 
@@ -24,10 +22,8 @@ public class PreviousTimerTask extends TimerTask {
         else{
             timer.cancel();
             panel.remove(label);
-            timer = new Timer(true);
             panel.started = true;
             panel.repaint();
-            timer.schedule(timerTask , 1000, 1000);
         }
     }
 }
