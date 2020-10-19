@@ -7,9 +7,8 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Main extends JFrame {
-    int reit;
-    int[] fine = new int[2];
-    MainPanel panel;
+    private int reit;
+    private MainPanel panel;
     private final File file = new File("reit.txt");
     private final Font font = new Font("Calibri", Font.PLAIN, 36);
 
@@ -23,10 +22,10 @@ public class Main extends JFrame {
         try {
             reit = new Scanner(file).nextInt();
         }catch (FileNotFoundException | NoSuchElementException e){
-            reit = 1000;
+            reit = 0;
         }
 
-        JLabel label = new JLabel("Ваш рейтинг: " + reit);
+        JLabel label = new JLabel("Ваш рекорд: " + reit);
         label.setFont(font);
         label.setBounds(250, 150, 400, 300);
         add(label);
@@ -35,7 +34,7 @@ public class Main extends JFrame {
         start.addActionListener(l -> {
             getContentPane().removeAll();
             repaint();
-            panel = new MainPanel(this, reit, fine);
+            panel = new MainPanel(this);
             add(panel);
             panel.start();
         });
@@ -47,30 +46,23 @@ public class Main extends JFrame {
     void contin (){
         getContentPane().removeAll();
         repaint();
-        int delta = -(fine[0] + fine[1]) / 2;
-        JLabel label = new JLabel("Ваш рейтинг: ");
+        JLabel label = new JLabel("Ваш счёт: ");
         label.setFont(font);
-        label.setBounds(250, 0, 250, 300);
+        label.setBounds(20, 0, 250, 100);
         add(label);
-        JLabel reiting = new JLabel((reit + delta) + "(" + delta + ")");
+        JLabel cause = new JLabel("Причина поражения: " + panel.getCause());
+        cause.setFont(font);
+        cause.setBounds(20, 100, 700, 100);
+        add(cause);
+        JLabel reiting = new JLabel(String.valueOf(panel.getScore()));
         reiting.setFont(font);
-        reiting.setBounds(500, 0, 250, 300);
-        if(delta >= 0){
-            reiting.setForeground(Color.green);
-        }
-        else{
-            reiting.setForeground(Color.red);
-        }
+        reiting.setBounds(400, 0, 250, 100);
         add(reiting);
-        JLabel time = new JLabel((fine[0] < 0? "Бонус за время: ": "Штраф за время: ") + Math.abs(fine[0]));
-        time.setBounds(100, 100, 700, 300);
-        time.setFont(font);
-        add(time);
-        JLabel shtraf = new JLabel("Штраф за неправильные ответы: " + fine[1]);
-        shtraf.setBounds(100, 200, 7000, 300);
+        reit = Math.max(reit, panel.getScore());
+        JLabel shtraf = new JLabel("Рекорд: " + reit);
+        shtraf.setBounds(20, 200, 700, 100);
         shtraf.setFont(font);
         add(shtraf);
-        reit += delta;
         try {
             PrintWriter writer = new PrintWriter(file);
             writer.println(reit);
@@ -85,12 +77,13 @@ public class Main extends JFrame {
         start.setBounds(100, 550, 200, 100);
         start.addActionListener(l -> {
             getContentPane().removeAll();
-            repaint();
-            panel.updateWorkingList(reit, fine);
+            panel.updateWorkingList();
             add(panel);
+            getContentPane().repaint();
             panel.start();
         });
         add(start);
+        repaint();
     }
 
     public static void main(String[] args) {

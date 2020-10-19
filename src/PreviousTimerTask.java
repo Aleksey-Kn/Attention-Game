@@ -20,7 +20,6 @@ public class PreviousTimerTask extends TimerTask {
             label.setText(Integer.toString(now--));
         }
         else{
-            timer.cancel();
             panel.remove(label);
             panel.started = true;
             panel.repaint();

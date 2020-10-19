@@ -2,25 +2,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.*;
+import java.util.Random;
 import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.LinkedBlockingDeque;
 
 public class MainPanel extends JPanel {
-    Color strColor = Color.BLUE;
-    Color[] colorStorage = new Color[]{Color.BLACK, Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW, Color.MAGENTA};
-    LinkedList<Color> workingColors = new LinkedList<>();
-    Main frame;
+    private Color strColor = Color.BLUE;
+    private final Color[] colorStorage = new Color[]{Color.BLACK, Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW, Color.MAGENTA};
+    private final LinkedBlockingDeque<Color> workingColors = new LinkedBlockingDeque<>();
+    private final Main frame;
     JLabel time;
-    int t;
+    private int score = 0;
     final private int h;
     final private int w1;
     private final int[] leftStrX;
     private final int[] StrY;
     private final int[] rightStrX;
-    Timer timer;
     boolean started = false;
+    private String cause;
 
-    MainPanel(Main frame, int reit, int[] fine) {
+    MainPanel(Main frame) {
         this.frame = frame;
         int w = frame.getWidth();
         h = frame.getWidth();
@@ -31,7 +33,7 @@ public class MainPanel extends JPanel {
         setBounds(0, 0, frame.getWidth(), frame.getHeight());
         setLayout(null);
 
-        updateWorkingList(reit, fine);
+        updateWorkingList();
 
         frame.addKeyListener(new KeyListener() {
             @Override
@@ -40,81 +42,77 @@ public class MainPanel extends JPanel {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (started) {
+                if (started && !workingColors.isEmpty()) {
                     switch (e.getKeyCode()) {
                         case KeyEvent.VK_1:
                             if (!colorStorage[0].equals(workingColors.getFirst())) {
-                                fine[1] = (fine[1] == 0 ? 1 : fine[1] * 2);
                                 strColor = Color.red;
+                                exit("Неправильные ответы");
                             } else {
                                 strColor = Color.green;
+                                score += (workingColors.size() < 8? 3: 1);
                             }
                             workingColors.removeFirst();
                             repaint();
                             break;
                         case KeyEvent.VK_2:
                             if (!colorStorage[1].equals(workingColors.getFirst())) {
-                                fine[1] = (fine[1] == 0 ? 1 : fine[1] * 2);
                                 strColor = Color.red;
+                                exit("Неправильные ответы");
                             } else {
                                 strColor = Color.green;
+                                score += (workingColors.size() < 8? 3: 1);
                             }
                             workingColors.removeFirst();
                             repaint();
                             break;
                         case KeyEvent.VK_3:
                             if (!colorStorage[2].equals(workingColors.getFirst())) {
-                                fine[1] = (fine[1] == 0 ? 1 : fine[1] * 2);
                                 strColor = Color.red;
+                                exit("Неправильные ответы");
                             } else {
                                 strColor = Color.green;
+                                score += (workingColors.size() < 8? 3: 1);
                             }
                             workingColors.removeFirst();
                             repaint();
                             break;
                         case KeyEvent.VK_8:
                             if (!colorStorage[3].equals(workingColors.getFirst())) {
-                                fine[1] = (fine[1] == 0 ? 1 : fine[1] * 2);
                                 strColor = Color.red;
+                                exit("Неправильные ответы");
                             } else {
                                 strColor = Color.green;
+                                score += (workingColors.size() < 8? 3: 1);
                             }
                             workingColors.removeFirst();
                             repaint();
                             break;
                         case KeyEvent.VK_9:
                             if (!colorStorage[4].equals(workingColors.getFirst())) {
-                                fine[1] = (fine[1] == 0 ? 1 : fine[1] * 2);
                                 strColor = Color.red;
+                                exit("Неправильные ответы");
                             } else {
                                 strColor = Color.green;
+                                score += (workingColors.size() < 8? 3: 1);
                             }
                             workingColors.removeFirst();
                             repaint();
                             break;
                         case KeyEvent.VK_0:
                             if (!colorStorage[5].equals(workingColors.getFirst())) {
-                                fine[1] = (fine[1] == 0 ? 1 : fine[1] * 2);
                                 strColor = Color.red;
+                                exit("Неправильные ответы");
                             } else {
                                 strColor = Color.green;
+                                score += (workingColors.size() < 8? 3: 1);
                             }
                             workingColors.removeFirst();
                             repaint();
                             break;
                     }
-                    if (workingColors.isEmpty()) {
-                        started = false;
-                        String[] s = time.getText().split(":");
-                        fine[0] = Integer.parseInt(s[0]) * -60 + Integer.parseInt(s[1]) * (s[0].charAt(0) == '-' ? 1 : -1);
-                        fine[0] = (int) (Math.signum(fine[0]) * Math.pow(Math.abs(fine[0]), 1.5));
-                        timer.cancel();
-                        remove(time);
-                        frame.contin();
-                    }
                 }
             }
-
             @Override
             public void keyReleased(KeyEvent e) {
             }
@@ -124,25 +122,37 @@ public class MainPanel extends JPanel {
     }
 
     void start() {
+        Timer timer = new Timer();
         repaint();
         JLabel previousTimer = new JLabel("3");
         previousTimer.setBounds(300, 0, 200, 400);
         previousTimer.setFont(new Font("Arial", Font.BOLD, 300));
         add(previousTimer);
         timer.schedule(new PreviousTimerTask(timer, previousTimer, this), 1000, 1000);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                strColor = Color.BLUE;
+            }
+        }, 250, 250);
+        new Adder(time, workingColors, this).start();
     }
 
-    void updateWorkingList(int reit, int[] fine) {
-        timer = new Timer();
-        Arrays.fill(fine, 0); // счёт и всё, что с ним связано
+    void updateWorkingList() {
         Random random = new Random();
-        for (int i = 0; i < reit / 25; i++) {
+        workingColors.clear();
+        for (int i = 0; i < 20; i++) {
             workingColors.add(colorStorage[random.nextInt(colorStorage.length)]);
         }
 
-        t = (int) Math.ceil(workingColors.size() * (1000f / reit));
-        time = new JLabel((t / 60) + ":" + (t % 60));
-        time.setBounds(5, 5, 100, 20);
+        JLabel underLose = new JLabel("Under lose:");
+        underLose.setBounds(5, 5, 80, 20);
+        JLabel unit = new JLabel("unit");
+        unit.setBounds(105, 5, 30, 20);
+        time = new JLabel("20");
+        time.setBounds(85, 5, 100, 20);
+        add(underLose);
+        add(unit);
         add(time);
     }
 
@@ -170,5 +180,20 @@ public class MainPanel extends JPanel {
         g.setColor(strColor);
         g.fillPolygon(rightStrX, StrY, rightStrX.length);
         g.fillPolygon(leftStrX, StrY, leftStrX.length);
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void exit(String c){
+        started = false;
+        cause = c;
+        remove(time);
+        frame.contin();
+    }
+
+    public String getCause() {
+        return cause;
     }
 }
