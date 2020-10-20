@@ -23,6 +23,7 @@ public class PreviousTimerTask extends TimerTask {
             panel.remove(label);
             panel.started = true;
             panel.repaint();
+            cancel();
         }
     }
 }

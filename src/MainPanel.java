@@ -13,7 +13,7 @@ public class MainPanel extends JPanel {
     private final LinkedBlockingDeque<Color> workingColors = new LinkedBlockingDeque<>();
     private final Main frame;
     JLabel time;
-    private int score = 0;
+    private int score;
     final private int h;
     final private int w1;
     private final int[] leftStrX;
@@ -139,6 +139,7 @@ public class MainPanel extends JPanel {
     }
 
     void updateWorkingList() {
+        score = 0;
         Random random = new Random();
         workingColors.clear();
         for (int i = 0; i < 20; i++) {
@@ -147,8 +148,8 @@ public class MainPanel extends JPanel {
 
         JLabel underLose = new JLabel("Under lose:");
         underLose.setBounds(5, 5, 80, 20);
-        JLabel unit = new JLabel("unit");
-        unit.setBounds(105, 5, 30, 20);
+        JLabel unit = new JLabel("/ 40 unit");
+        unit.setBounds(105, 5, 80, 20);
         time = new JLabel("20");
         time.setBounds(85, 5, 100, 20);
         add(underLose);
@@ -187,10 +188,12 @@ public class MainPanel extends JPanel {
     }
 
     public void exit(String c){
-        started = false;
-        cause = c;
-        remove(time);
-        frame.contin();
+        if(started) {
+            started = false;
+            cause = c;
+            remove(time);
+            frame.contin();
+        }
     }
 
     public String getCause() {
