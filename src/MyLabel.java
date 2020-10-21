@@ -10,14 +10,14 @@ class MyLabel extends JLabel {
     }
 
     public void setCount(int count) {
-        this.count = count - 6;
+        this.count = count;
         repaint();
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        g.setColor(new Color((int)(count * 5.8), (int)(255 - (count * 5.8)), 0));
-        g.fillRect(0, 0, getWidth() - (count * getWidth() / 44), 30);
+        g.setColor(new Color((int)(count * 5.1), (int)(255 - (count * 5.1)), 0));
+        g.fillRect(0, 0, getWidth() - (count * getWidth() / 50), 30);
     }
 }

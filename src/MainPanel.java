@@ -21,6 +21,7 @@ public class MainPanel extends JPanel {
     private final int[] rightStrX;
     boolean started = false;
     private String cause;
+    private Thread adder;
 
     MainPanel(Main frame) {
         this.frame = frame;
@@ -49,6 +50,7 @@ public class MainPanel extends JPanel {
                         case KeyEvent.VK_1:
                             if (!colorStorage[0].equals(workingColors.getFirst())) {
                                 strColor = Color.red;
+                                adder.interrupt();
                                 exit("Неправильные ответы");
                             } else {
                                 strColor = Color.green;
@@ -60,6 +62,7 @@ public class MainPanel extends JPanel {
                         case KeyEvent.VK_2:
                             if (!colorStorage[1].equals(workingColors.getFirst())) {
                                 strColor = Color.red;
+                                adder.interrupt();
                                 exit("Неправильные ответы");
                             } else {
                                 strColor = Color.green;
@@ -71,6 +74,7 @@ public class MainPanel extends JPanel {
                         case KeyEvent.VK_3:
                             if (!colorStorage[2].equals(workingColors.getFirst())) {
                                 strColor = Color.red;
+                                adder.interrupt();
                                 exit("Неправильные ответы");
                             } else {
                                 strColor = Color.green;
@@ -82,6 +86,7 @@ public class MainPanel extends JPanel {
                         case KeyEvent.VK_8:
                             if (!colorStorage[3].equals(workingColors.getFirst())) {
                                 strColor = Color.red;
+                                adder.interrupt();
                                 exit("Неправильные ответы");
                             } else {
                                 strColor = Color.green;
@@ -93,6 +98,7 @@ public class MainPanel extends JPanel {
                         case KeyEvent.VK_9:
                             if (!colorStorage[4].equals(workingColors.getFirst())) {
                                 strColor = Color.red;
+                                adder.interrupt();
                                 exit("Неправильные ответы");
                             } else {
                                 strColor = Color.green;
@@ -104,6 +110,7 @@ public class MainPanel extends JPanel {
                         case KeyEvent.VK_0:
                             if (!colorStorage[5].equals(workingColors.getFirst())) {
                                 strColor = Color.red;
+                                adder.interrupt();
                                 exit("Неправильные ответы");
                             } else {
                                 strColor = Color.green;
@@ -138,7 +145,8 @@ public class MainPanel extends JPanel {
                 strColor = Color.BLUE;
             }
         }, 250, 250);
-        new Adder(time, workingColors, this).start();
+        adder = new Adder(time, workingColors, this);
+        adder.start();
     }
 
     void updateWorkingList() {

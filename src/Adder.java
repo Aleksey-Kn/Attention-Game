@@ -21,13 +21,16 @@ public class Adder extends Thread{
     public void run() {
         Random random = new Random();
         while (list.size() < 50){
+            if(isInterrupted()){
+                return;
+            }
             list.addLast(colorStorage[random.nextInt(colorStorage.length)]);
             counter.setCount(list.size());
             if(list.size() > 6) {
                 try {
                     sleep((long) time);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    return;
                 }
             } else{
                 synchronized (mainPanel){
@@ -35,7 +38,7 @@ public class Adder extends Thread{
                 }
             }
             if(time > 250) {
-                time *= 0.99;
+                time *= 0.98;
             }
         }
         mainPanel.exit("Слишком медленно");
