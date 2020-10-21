@@ -15,7 +15,7 @@ public class Main extends JFrame {
     Main(){
         super("Attention game");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setBounds(200, 10, 800, 700);
+        setBounds(200, 5, 800, 720);
         setLayout(null);
         setFocusable(true);
 

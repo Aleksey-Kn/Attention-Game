@@ -5,12 +5,12 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 public class Adder extends Thread{
     private float time = 1500;
-    private final JLabel counter;
+    private final MyLabel counter;
     private final LinkedBlockingDeque<Color> list;
     private final MainPanel mainPanel;
     private final Color[] colorStorage = new Color[]{Color.BLACK, Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW, Color.MAGENTA};
 
-    Adder(JLabel count, LinkedBlockingDeque<Color> list, MainPanel mainPanel){
+    Adder(MyLabel count, LinkedBlockingDeque<Color> list, MainPanel mainPanel){
         counter = count;
         this.list = list;
         this.mainPanel = mainPanel;
@@ -22,15 +22,16 @@ public class Adder extends Thread{
         Random random = new Random();
         while (list.size() < 50){
             list.addLast(colorStorage[random.nextInt(colorStorage.length)]);
-            counter.setText(String.valueOf(list.size()));
-            synchronized (mainPanel){
-                mainPanel.repaint();
-            }
+            counter.setCount(list.size());
             if(list.size() > 6) {
                 try {
                     sleep((long) time);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                }
+            } else{
+                synchronized (mainPanel){
+                    mainPanel.repaint();
                 }
             }
             if(time > 250) {

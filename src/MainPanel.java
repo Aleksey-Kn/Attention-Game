@@ -12,7 +12,7 @@ public class MainPanel extends JPanel {
     private final Color[] colorStorage = new Color[]{Color.BLACK, Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW, Color.MAGENTA};
     private final LinkedBlockingDeque<Color> workingColors = new LinkedBlockingDeque<>();
     private final Main frame;
-    JLabel time;
+    final MyLabel time;
     private int score;
     final private int h;
     final private int w1;
@@ -33,6 +33,8 @@ public class MainPanel extends JPanel {
         setBounds(0, 0, frame.getWidth(), frame.getHeight());
         setLayout(null);
 
+        time = new MyLabel(getWidth(), getHeight());
+        add(time);
         updateWorkingList();
 
         frame.addKeyListener(new KeyListener() {
@@ -111,6 +113,7 @@ public class MainPanel extends JPanel {
                             repaint();
                             break;
                     }
+                    time.setCount(workingColors.size());
                 }
             }
             @Override
@@ -145,16 +148,7 @@ public class MainPanel extends JPanel {
         for (int i = 0; i < 20; i++) {
             workingColors.add(colorStorage[random.nextInt(colorStorage.length)]);
         }
-
-        JLabel underLose = new JLabel("Under lose:");
-        underLose.setBounds(5, 5, 80, 20);
-        JLabel unit = new JLabel("/ 40 unit");
-        unit.setBounds(105, 5, 80, 20);
-        time = new JLabel("20");
-        time.setBounds(85, 5, 100, 20);
-        add(underLose);
-        add(unit);
-        add(time);
+        time.setCount(20);
     }
 
     @Override
@@ -184,14 +178,13 @@ public class MainPanel extends JPanel {
     }
 
     public int getScore() {
-        return score;
+        return (int)Math.pow((float)score / 10, 2);
     }
 
     public void exit(String c){
         if(started) {
             started = false;
             cause = c;
-            remove(time);
             frame.contin();
         }
     }
