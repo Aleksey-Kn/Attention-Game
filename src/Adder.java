@@ -37,8 +37,8 @@ public class Adder extends Thread{
                     mainPanel.repaint();
                 }
             }
-            if(time > 250) {
-                time *= 0.98;
+            if(time > 300) {
+                time *= 0.985;
             }
         }
         mainPanel.exit("Слишком медленно");

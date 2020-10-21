@@ -186,7 +186,7 @@ public class MainPanel extends JPanel {
     }
 
     public int getScore() {
-        return (int)Math.pow((float)score / 10, 2);
+        return (int)Math.pow((float)score / 10, 1.5);
     }
 
     public void exit(String c){
