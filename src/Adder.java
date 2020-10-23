@@ -3,14 +3,14 @@ import java.awt.*;
 import java.util.Random;
 import java.util.concurrent.LinkedBlockingDeque;
 
-public class Adder extends Thread{
-    private float time = 1500;
+public class Adder extends Thread {
+    private double time = 1500;
     private final MyLabel counter;
     private final LinkedBlockingDeque<Color> list;
     private final MainPanel mainPanel;
     private final Color[] colorStorage = new Color[]{Color.BLACK, Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW, Color.MAGENTA};
 
-    Adder(MyLabel count, LinkedBlockingDeque<Color> list, MainPanel mainPanel){
+    Adder(MyLabel count, LinkedBlockingDeque<Color> list, MainPanel mainPanel) {
         counter = count;
         this.list = list;
         this.mainPanel = mainPanel;
@@ -20,25 +20,25 @@ public class Adder extends Thread{
     @Override
     public void run() {
         Random random = new Random();
-        while (list.size() < 50){
-            if(isInterrupted()){
+        while (list.size() < 50) {
+            if (isInterrupted()) {
                 return;
             }
             list.addLast(colorStorage[random.nextInt(colorStorage.length)]);
             counter.setCount(list.size());
-            if(list.size() > 6) {
+            if (list.size() > 7) {
                 try {
-                    sleep((long) time);
+                    sleep((int) time);
                 } catch (InterruptedException e) {
                     return;
                 }
-            } else{
-                synchronized (mainPanel){
+            } else {
+                synchronized (mainPanel) {
                     mainPanel.repaint();
                 }
             }
-            if(time > 300) {
-                time *= 0.985;
+            if (time > 350) {
+                time = (time > 1000 ? 0.99 * time : time - 3);
             }
         }
         mainPanel.exit("Слишком медленно");
