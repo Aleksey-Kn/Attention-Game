@@ -22,6 +22,7 @@ public class MainPanel extends JPanel {
     boolean started = false;
     private String cause;
     private Thread adder;
+    private int lives;
 
     MainPanel(Main frame) {
         this.frame = frame;
@@ -50,11 +51,13 @@ public class MainPanel extends JPanel {
                         case KeyEvent.VK_1:
                             if (!colorStorage[0].equals(workingColors.getFirst())) {
                                 strColor = Color.red;
-                                adder.interrupt();
-                                exit("Неправильные ответы");
+                                if (--lives == 0) {
+                                    adder.interrupt();
+                                    exit("Неправильные ответы");
+                                }
                             } else {
                                 strColor = Color.green;
-                                score += (workingColors.size() < 8? 3: 1);
+                                score += (workingColors.size() < 8 ? 3 : 1);
                             }
                             workingColors.removeFirst();
                             repaint();
@@ -62,11 +65,13 @@ public class MainPanel extends JPanel {
                         case KeyEvent.VK_2:
                             if (!colorStorage[1].equals(workingColors.getFirst())) {
                                 strColor = Color.red;
-                                adder.interrupt();
-                                exit("Неправильные ответы");
+                                if (--lives == 0) {
+                                    adder.interrupt();
+                                    exit("Неправильные ответы");
+                                }
                             } else {
                                 strColor = Color.green;
-                                score += (workingColors.size() < 8? 3: 1);
+                                score += (workingColors.size() < 8 ? 3 : 1);
                             }
                             workingColors.removeFirst();
                             repaint();
@@ -74,11 +79,13 @@ public class MainPanel extends JPanel {
                         case KeyEvent.VK_3:
                             if (!colorStorage[2].equals(workingColors.getFirst())) {
                                 strColor = Color.red;
-                                adder.interrupt();
-                                exit("Неправильные ответы");
+                                if (--lives == 0) {
+                                    adder.interrupt();
+                                    exit("Неправильные ответы");
+                                }
                             } else {
                                 strColor = Color.green;
-                                score += (workingColors.size() < 8? 3: 1);
+                                score += (workingColors.size() < 8 ? 3 : 1);
                             }
                             workingColors.removeFirst();
                             repaint();
@@ -86,11 +93,13 @@ public class MainPanel extends JPanel {
                         case KeyEvent.VK_8:
                             if (!colorStorage[3].equals(workingColors.getFirst())) {
                                 strColor = Color.red;
-                                adder.interrupt();
-                                exit("Неправильные ответы");
+                                if (--lives == 0) {
+                                    adder.interrupt();
+                                    exit("Неправильные ответы");
+                                }
                             } else {
                                 strColor = Color.green;
-                                score += (workingColors.size() < 8? 3: 1);
+                                score += (workingColors.size() < 8 ? 3 : 1);
                             }
                             workingColors.removeFirst();
                             repaint();
@@ -98,11 +107,13 @@ public class MainPanel extends JPanel {
                         case KeyEvent.VK_9:
                             if (!colorStorage[4].equals(workingColors.getFirst())) {
                                 strColor = Color.red;
-                                adder.interrupt();
-                                exit("Неправильные ответы");
+                                if (--lives == 0) {
+                                    adder.interrupt();
+                                    exit("Неправильные ответы");
+                                }
                             } else {
                                 strColor = Color.green;
-                                score += (workingColors.size() < 8? 3: 1);
+                                score += (workingColors.size() < 8 ? 3 : 1);
                             }
                             workingColors.removeFirst();
                             repaint();
@@ -110,11 +121,13 @@ public class MainPanel extends JPanel {
                         case KeyEvent.VK_0:
                             if (!colorStorage[5].equals(workingColors.getFirst())) {
                                 strColor = Color.red;
-                                adder.interrupt();
-                                exit("Неправильные ответы");
+                                if (--lives == 0) {
+                                    adder.interrupt();
+                                    exit("Неправильные ответы");
+                                }
                             } else {
                                 strColor = Color.green;
-                                score += (workingColors.size() < 8? 3: 1);
+                                score += (workingColors.size() < 8 ? 3 : 1);
                             }
                             workingColors.removeFirst();
                             repaint();
@@ -123,6 +136,7 @@ public class MainPanel extends JPanel {
                     time.setCount(workingColors.size());
                 }
             }
+
             @Override
             public void keyReleased(KeyEvent e) {
             }
@@ -151,6 +165,7 @@ public class MainPanel extends JPanel {
 
     void updateWorkingList() {
         score = 0;
+        lives = 3;
         Random random = new Random();
         workingColors.clear();
         for (int i = 0; i < 20; i++) {
@@ -163,6 +178,11 @@ public class MainPanel extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         int it = 0;
+        g.setColor(Color.green);
+        for (int i = 0; i < lives; i++) {
+            g.fillOval(getWidth() - 55 - i * 30, 20, 25, 25);
+        }
+        g.setColor(Color.BLACK);
         for (int i = 1; i <= 3; i++) {
             g.drawString(Integer.toString(i), 100 + 80 * i, 600);
         }
@@ -186,11 +206,11 @@ public class MainPanel extends JPanel {
     }
 
     public int getScore() {
-        return (int)Math.pow((float)score / 10, 1.5);
+        return (int) Math.pow((float) score / 10, 1.5);
     }
 
-    public void exit(String c){
-        if(started) {
+    public void exit(String c) {
+        if (started) {
             started = false;
             cause = c;
             frame.contin();
