@@ -178,6 +178,7 @@ public class MainPanel extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         int it = 0;
+        g.drawString("Lives:", getWidth() - 180, 40);
         g.setColor(Color.green);
         for (int i = 0; i < lives; i++) {
             g.fillOval(getWidth() - 55 - i * 30, 20, 25, 25);
@@ -206,7 +207,7 @@ public class MainPanel extends JPanel {
     }
 
     public int getScore() {
-        return (int) Math.pow((float) score / 10, 1.5);
+        return (int) Math.pow((float) score / 10, 1.2);
     }
 
     public void exit(String c) {
