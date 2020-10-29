@@ -23,6 +23,7 @@ public class MainPanel extends JPanel {
     private String cause;
     private Thread adder;
     private int lives;
+    private final JLabel labelScore = new JLabel();
 
     MainPanel(Main frame) {
         this.frame = frame;
@@ -35,6 +36,8 @@ public class MainPanel extends JPanel {
         setBounds(0, 0, frame.getWidth(), frame.getHeight());
         setLayout(null);
 
+        labelScore.setBounds(5, 5, 80, 20);
+        add(labelScore);
         time = new MyLabel(getWidth(), getHeight());
         add(time);
         updateWorkingList();
@@ -134,6 +137,7 @@ public class MainPanel extends JPanel {
                             break;
                     }
                     time.setCount(workingColors.size());
+                    labelScore.setText("Score: " + getScore());
                 }
             }
 
@@ -172,6 +176,7 @@ public class MainPanel extends JPanel {
             workingColors.add(colorStorage[random.nextInt(colorStorage.length)]);
         }
         time.setCount(20);
+        labelScore.setText("Score: 0");
     }
 
     @Override
