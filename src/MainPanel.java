@@ -163,7 +163,7 @@ public class MainPanel extends JPanel {
                 strColor = Color.BLUE;
                 repaint();
             }
-        }, 250, 250);
+        }, 500, 500);
         adder = new Adder(time, workingColors, this);
         adder.start();
     }
