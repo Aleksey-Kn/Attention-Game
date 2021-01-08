@@ -161,6 +161,7 @@ public class MainPanel extends JPanel {
             @Override
             public void run() {
                 strColor = Color.BLUE;
+                repaint();
             }
         }, 250, 250);
         adder = new Adder(time, workingColors, this);

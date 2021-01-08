@@ -3,10 +3,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class PreviousTimerTask extends TimerTask {
-    int now = 2;
-    Timer timer;
-    JLabel label;
-    MainPanel panel;
+    private int now = 2;
+    private Timer timer;
+    private JLabel label;
+    private MainPanel panel;
 
     PreviousTimerTask(Timer t, JLabel l, MainPanel panel){
         timer = t;

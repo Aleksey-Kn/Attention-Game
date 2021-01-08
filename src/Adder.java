@@ -1,10 +1,9 @@
-import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 import java.util.concurrent.LinkedBlockingDeque;
 
 public class Adder extends Thread {
-    private double time = 1250;
+    private double time = 1000;
     private final MyLabel counter;
     private final LinkedBlockingDeque<Color> list;
     private final MainPanel mainPanel;
@@ -37,8 +36,8 @@ public class Adder extends Thread {
                     mainPanel.repaint();
                 }
             }
-            if (time > 450) {
-                time = (time > 1000 ? 0.99 * time : time - 3);
+            if (time > 500) {
+                time =  0.99 * time;
             }
         }
         mainPanel.exit("Слишком медленно");
